@@ -1,8 +1,9 @@
 import transformers
 import google.generativeai as genai
+import google
 from tqdm.auto import tqdm
 
-import json, argparse, random, os
+import json, argparse, random, time
 
 from utils import generate_few_shot, wcst_generator, string_generator
 
@@ -161,8 +162,13 @@ Options:
                             ans = response.split("ANSWER: ")[-1].strip()
 
                         elif args.model == "gemini":
-                            response = chat.send_message(correct_prefix + test_prompt).text
+                            try:
+                                response = chat.send_message(correct_prefix + test_prompt).text
+                            except google.api_core.exceptions.ResourceExhausted:
+                                time.sleep(60)
+                                response = chat.send_message(correct_prefix + test_prompt).text
                             ans = response.split("ANSWER: ")[-1].strip()
+                            time.sleep(2)
 
                         if len(ans) != 1:
                             correct_prefix = """Answer not found. Please state your answer using the template: \"ANSWER: <index>\""""
