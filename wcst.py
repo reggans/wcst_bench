@@ -168,7 +168,7 @@ Options:
                                 time.sleep(60)
                                 response = chat.send_message(correct_prefix + test_prompt).text
                             ans = response.split("ANSWER: ")[-1].strip()
-                            time.sleep(10)
+                            time.sleep(2)
 
                         if len(ans) != 1:
                             correct_prefix = """Answer not found. Please state your answer using the template: \"ANSWER: <index>\""""
