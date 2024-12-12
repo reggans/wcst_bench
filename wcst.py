@@ -4,7 +4,7 @@ from tqdm.auto import tqdm
 
 import json, argparse, random, os
 
-from .utils import generate_few_shot, wcst_generator, string_generator
+from utils import generate_few_shot, wcst_generator, string_generator
 
 wcst_prompt = """You are performing the Wisconsin Card Sorting Test (WCST).
 You will be shown a given card with a symbol on it, and you will have to match it to one of four option cards according to an attribute that you have to figure out.
