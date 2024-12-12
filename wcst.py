@@ -55,7 +55,7 @@ State your final answer using the template: "ANSWER: <index>"
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="llama")
-    parser.add_argument("--variant", type=str, default="wcst")
+    parser.add_argument("--variant", type=str, default="card")
     parser.add_argument("--max_trials", type=int, default=64)
     parser.add_argument("--num_correct", type=int, default=5)
     parser.add_argument("--few_shot", type=bool, default=False)
