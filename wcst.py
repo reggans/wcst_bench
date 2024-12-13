@@ -45,7 +45,9 @@ The rule is one of the following:
 3. The number of consonants in the string
 
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
-If you are incorrect, you either made a mistake or the rule has changed. You have to figure out the correct rule to match the strings.
+If you are incorrect, you either made a mistake or the rule has changed. 
+If you believe you have made a mistake, correct it and try again.
+If you believe the rule has changed, you have to figure out the correct rule to match the strings.
 If you are correct, you have to stick with the same rule until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
 Your final answer should be a number between 1-4 corresponding to the index of the string you think is the correct match.
