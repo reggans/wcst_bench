@@ -61,6 +61,7 @@ if __name__ == "__main__":
     parser.add_argument("--variant", type=str, default="card")
     parser.add_argument("--max_trials", type=int, default=64)
     parser.add_argument("--num_correct", type=int, default=5)
+    parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--few_shot", action="store_true")
     parser.add_argument("--cot", action="store_true")
     parser.add_argument("--verbose", type=int, default=15)
@@ -124,84 +125,89 @@ if __name__ == "__main__":
     total_correct = 0
     correct_prefix = ""
 
-    with tqdm(total=max_trials, desc="Total trials") as pbar:
-        for _ in range(2):      
-            for rule in rules:
-                correct_cnt = 0
-                
-                for trial in tqdm(range(num_correct), total=num_correct, desc=f"Correct responses for {rule}"):
-                    if variant == "card":
-                        given, opt = wcst_generator(rule, False)
-                    elif variant == "card-random":
-                        given, opt = wcst_generator(rule, True)
-                    else:
-                        given, opt = string_generator(rule)
+    for _ in range(args.repeats):
+        save_rep = []
 
-                    chosen = opt[0]
-                    random.shuffle(opt)
-                    chosen_idx = opt.index(chosen) + 1
-    
-                    test_prompt = f"""Given: {given}
-Options:
-1. {opt[0]}
-2. {opt[1]}
-3. {opt[2]}
-4. {opt[3]}
-"""
-    
-                    correct = False
-                    while not correct:
-                        if n_trials >= max_trials:
-                            break
-                        pbar.update(1)
-    
-                        n_trials += 1
-
-                        if args.model == "llama":
-                            messages.append({"role": "user", "content": correct_prefix + test_prompt})
-
-                            messages = pipeline(messages, 
-                                                max_new_tokens=500,
-                                                pad_token_id=pipeline.tokenizer.eos_token_id)[0]["generated_text"]
-                            response = messages[-1]["content"]
-                            ans = response.split("ANSWER: ")[-1].strip()
-
-                        elif args.model == "gemini":
-                            try:
-                                response = chat.send_message(correct_prefix + test_prompt).text
-                            except google.api_core.exceptions.ResourceExhausted:
-                                time.sleep(60)
-                                response = chat.send_message(correct_prefix + test_prompt).text
-                            ans = response.split("ANSWER: ")[-1].strip()
-                            time.sleep(2)
-
-                        if len(ans) != 1:
-                            correct_prefix = """Answer not found. Please state your answer using the template: \"ANSWER: <index>\""""
-                        elif ans == str(chosen_idx):
-                            correct_prefix = "Correct!\n"
-                            correct = True
-                            correct_cnt += 1
-                            total_correct += 1
+        with tqdm(total=max_trials, desc="Total trials") as pbar:
+            for _ in range(2):      
+                for rule in rules:
+                    correct_cnt = 0
+                    
+                    for trial in tqdm(range(num_correct), total=num_correct, desc=f"Correct responses for {rule}"):
+                        if variant == "card":
+                            given, opt = wcst_generator(rule, False)
+                        elif variant == "card-random":
+                            given, opt = wcst_generator(rule, True)
                         else:
-                            correct_prefix = "Incorrect. Please try again.\n"
+                            given, opt = string_generator(rule)
 
-                        if n_trials % 15 == 0:
-                            tqdm.write(test_prompt)
-                            tqdm.write(response)
+                        chosen = opt[0]
+                        random.shuffle(opt)
+                        chosen_idx = opt.index(chosen) + 1
+        
+                        test_prompt = f"""Given: {given}
+    Options:
+    1. {opt[0]}
+    2. {opt[1]}
+    3. {opt[2]}
+    4. {opt[3]}
+    """
+        
+                        correct = False
+                        while not correct:
+                            if n_trials >= max_trials:
+                                break
+                            pbar.update(1)
+        
+                            n_trials += 1
 
-                        save_row = {"rule": rule,
-                                    "correct": correct,
-                                    "question": test_prompt,
-                                    "response": response,
-                                    "model_ans": ans,
-                                    "true_ans": chosen_idx}
-                        save.append(save_row)
-                        with open(save_path, "w") as f:
-                            json.dump(save, f, indent=4)
-                
-                if correct_cnt == num_correct:
-                    completed_cat += 1
+                            if args.model == "llama":
+                                messages.append({"role": "user", "content": correct_prefix + test_prompt})
 
-    print(f"Completed categories: {completed_cat}")
-    print(f"Total number of trials: {n_trials}")
-    print(f"Total accuracy: {total_correct/n_trials}")
+                                messages = pipeline(messages, 
+                                                    max_new_tokens=500,
+                                                    pad_token_id=pipeline.tokenizer.eos_token_id)[0]["generated_text"]
+                                response = messages[-1]["content"]
+                                ans = response.split("ANSWER: ")[-1].strip()
+
+                            elif args.model == "gemini":
+                                try:
+                                    response = chat.send_message(correct_prefix + test_prompt).text
+                                except google.api_core.exceptions.ResourceExhausted:
+                                    time.sleep(60)
+                                    response = chat.send_message(correct_prefix + test_prompt).text
+                                ans = response.split("ANSWER: ")[-1].strip()
+                                time.sleep(2)
+
+                            if len(ans) != 1:
+                                correct_prefix = """Answer not found. Please state your answer using the template: \"ANSWER: <index>\""""
+                            elif ans == str(chosen_idx):
+                                correct_prefix = "Correct!\n"
+                                correct = True
+                                correct_cnt += 1
+                                total_correct += 1
+                            else:
+                                correct_prefix = "Incorrect. Please try again.\n"
+
+                            if n_trials % 15 == 0:
+                                tqdm.write(test_prompt)
+                                tqdm.write(response)
+
+                            save_row = {"rule": rule,
+                                        "correct": correct,
+                                        "question": test_prompt,
+                                        "response": response,
+                                        "model_ans": ans,
+                                        "true_ans": chosen_idx}
+                            save_rep.append(save_row)
+                    
+                    if correct_cnt == num_correct:
+                        completed_cat += 1
+
+        print(f"Completed categories: {completed_cat}")
+        print(f"Total number of trials: {n_trials}")
+        print(f"Total accuracy: {total_correct/n_trials}")
+    
+        save.append(save_rep)
+        with open(save_path, "w") as f:
+            json.dump(save, f, indent=4)
