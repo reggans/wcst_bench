@@ -15,7 +15,7 @@ The cards will be described by the following attributes:
 3. Shape of symbols
 
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
-If you are incorrect, you have to consider the feedback and try a different attribute to match the cards.
+If you are incorrect, you either made a mistake or the rule has changed. You have to figure out the correct rule to match the cards.
 If you are correct, you have to stick with the same attribute until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
 Your final answer should be a number between 1-4 corresponding to the index of the card you think is the correct match.
@@ -30,7 +30,7 @@ The cards will be described by the following attributes in a random order:
 3. Shape of symbols
 
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
-If you are incorrect, you have to consider the feedback and try a different attribute to match the cards.
+If you are incorrect, you either made a mistake or the rule has changed. You have to figure out the correct rule to match the cards.
 If you are correct, you have to stick with the same attribute until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
 Your final answer should be a number between 1-4 corresponding to the index of the card you think is the correct match.
@@ -45,7 +45,7 @@ The rule is one of the following:
 3. The number of consonants in the string
 
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
-If you are incorrect, you have to consider the feedback and try a different rule to match the strings.
+If you are incorrect, you either made a mistake or the rule has changed. You have to figure out the correct rule to match the strings.
 If you are correct, you have to stick with the same rule until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
 Your final answer should be a number between 1-4 corresponding to the index of the string you think is the correct match.
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         system_prompt += generate_few_shot(variant)
 
     if cot:
-        system_prompt += "Let's analyze and think step by step.\n"
+        system_prompt += "Explain your thought process regarding the problem and the feedbacks you received.\n"
 
     if args.model == "llama":
         pipeline = transformers.pipeline(
