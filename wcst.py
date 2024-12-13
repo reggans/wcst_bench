@@ -59,8 +59,8 @@ if __name__ == "__main__":
     parser.add_argument("--variant", type=str, default="card")
     parser.add_argument("--max_trials", type=int, default=64)
     parser.add_argument("--num_correct", type=int, default=5)
-    parser.add_argument("--few_shot", type=bool, default=False)
-    parser.add_argument("--cot", type=bool, default=False)
+    parser.add_argument("--few_shot", action="store_true")
+    parser.add_argument("--cot", action="store_true")
     parser.add_argument("--verbose", type=int, default=15)
     
     args = parser.parse_args()
@@ -84,6 +84,9 @@ if __name__ == "__main__":
 
     if few_shot:
         system_prompt += generate_few_shot(variant)
+
+    if cot:
+        system_prompt += "Let's analyze and think step by step.\n"
 
     if args.model == "llama":
         pipeline = transformers.pipeline(
