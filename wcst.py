@@ -119,14 +119,14 @@ if __name__ == "__main__":
         save_path = save_path.replace(".json", "_cot.json")
 
     save = []
-    
-    n_trials = 0
-    completed_cat = 0
-    total_correct = 0
-    correct_prefix = ""
 
     for _ in range(args.repeats):
         save_rep = []
+
+        n_trials = 0
+        completed_cat = 0
+        total_correct = 0
+        correct_prefix = ""
 
         with tqdm(total=max_trials, desc="Total trials") as pbar:
             for _ in range(2):      
