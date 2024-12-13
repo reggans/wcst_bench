@@ -17,8 +17,8 @@ The cards will be described by the following attributes:
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
 If you are incorrect, you have to consider the feedback and try a different attribute to match the cards.
 If you are correct, you have to stick with the same attribute until you are incorrect.
-Keep performing the task until the end of the test.
-Answer with the index of the card you think is the correct match.
+There is always a true answer in the task, and you have to keep performing the task until the end of the test.
+Your final answer should be a number between 1-4 corresponding to the index of the card you think is the correct match.
 State your final answer using the template: "ANSWER: <index>"
 
 """
@@ -32,8 +32,8 @@ The cards will be described by the following attributes in a random order:
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
 If you are incorrect, you have to consider the feedback and try a different attribute to match the cards.
 If you are correct, you have to stick with the same attribute until you are incorrect.
-Keep performing the task until the end of the test.
-Answer with the index of the card you think is the correct match.
+There is always a true answer in the task, and you have to keep performing the task until the end of the test.
+Your final answer should be a number between 1-4 corresponding to the index of the card you think is the correct match.
 State your final answer using the template: "ANSWER: <index>"
 
 """
@@ -47,8 +47,8 @@ The rule is one of the following:
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
 If you are incorrect, you have to consider the feedback and try a different rule to match the strings.
 If you are correct, you have to stick with the same rule until you are incorrect.
-Keep performing the task until the end of the test.
-Answer with the index of the string you think is the correct match.
+There is always a true answer in the task, and you have to keep performing the task until the end of the test.
+Your final answer should be a number between 1-4 corresponding to the index of the string you think is the correct match.
 State your final answer using the template: "ANSWER: <index>"
 
 """
