@@ -16,9 +16,12 @@ The cards will be described by the following attributes:
 3. Shape of symbols
 
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
-If you are incorrect, you either made a mistake or the rule has changed. You have to figure out the correct rule to match the cards.
+If you are incorrect, you either made a mistake or the rule has changed. 
+If you believe you have made a mistake, correct it and try again.
+If you believe the rule has changed, you have to figure out the correct rule to match the cards.
 If you are correct, you have to stick with the same attribute until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
+You have to answer within 300 tokens.
 Your final answer should be a number between 1-4 corresponding to the index of the card you think is the correct match.
 State your final answer using the template: "ANSWER: <index>"
 
@@ -31,9 +34,12 @@ The cards will be described by the following attributes in a random order:
 3. Shape of symbols
 
 You will be told "Correct!" if you are correct and "Incorrect. Please try again." if you are incorrect.
-If you are incorrect, you either made a mistake or the rule has changed. You have to figure out the correct rule to match the cards.
+If you are incorrect, you either made a mistake or the rule has changed. 
+If you believe you have made a mistake, correct it and try again.
+If you believe the rule has changed, you have to figure out the correct rule to match the cards.
 If you are correct, you have to stick with the same attribute until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
+You have to answer within 300 tokens.
 Your final answer should be a number between 1-4 corresponding to the index of the card you think is the correct match.
 State your final answer using the template: "ANSWER: <index>"
 
@@ -51,6 +57,7 @@ If you believe you have made a mistake, correct it and try again.
 If you believe the rule has changed, you have to figure out the correct rule to match the strings.
 If you are correct, you have to stick with the same rule until you are incorrect.
 There is always a true answer in the task, and you have to keep performing the task until the end of the test.
+You have to answer within 300 tokens.
 Your final answer should be a number between 1-4 corresponding to the index of the string you think is the correct match.
 State your final answer using the template: "ANSWER: <index>"
 
@@ -183,7 +190,7 @@ if __name__ == "__main__":
                                 time.sleep(2)
 
                             if len(ans) != 1:
-                                correct_prefix = """Answer not found. Please state your answer using the template: \"ANSWER: <index>\""""
+                                correct_prefix = """Answer not found. Please state your final answer using the template: \"ANSWER: <index>\""""
                             elif ans == str(chosen_idx):
                                 correct_prefix = "Correct!\n"
                                 correct = True
