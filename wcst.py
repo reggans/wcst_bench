@@ -100,19 +100,17 @@ if __name__ == "__main__":
 
     save = []
 
+    if args.model == "llama":
+        pipeline = transformers.pipeline(
+            "text-generation",
+            model="meta-llama/Llama-3.1-8B-Instruct",
+        )
+
     for rep in range(args.repeats):
-        if rep > 0:
-            pipeline = None
-            del pipeline
-            torch.cuda.empty_cache()
+        torch.cuda.empty_cache()
         save_rep = []
 
         if args.model == "llama":
-            pipeline = transformers.pipeline(
-            "text-generation",
-            model="meta-llama/Llama-3.1-8B-Instruct",
-            )
-
             messages = [{"role": "system", "content": system_prompt},]
 
         elif args.model == "gemini":
