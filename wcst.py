@@ -168,7 +168,7 @@ if __name__ == "__main__":
                                 messages.append({"role": "user", "content": correct_prefix + test_prompt})
 
                                 messages = pipeline(messages, 
-                                                    max_new_tokens=500,
+                                                    max_new_tokens=300,
                                                     pad_token_id=pipeline.tokenizer.eos_token_id)[0]["generated_text"]
                                 response = messages[-1]["content"]
                                 ans = response.split("ANSWER: ")[-1].strip()
