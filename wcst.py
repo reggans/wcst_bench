@@ -1,6 +1,7 @@
 import transformers
 import google.generativeai as genai
 import google
+import torch
 from tqdm.auto import tqdm
 
 import json, argparse, random, time
@@ -90,27 +91,6 @@ if __name__ == "__main__":
 
     if cot:
         system_prompt += "Explain your thought process regarding the problem and the feedbacks you received.\n"
-
-    if args.model == "llama":
-        pipeline = transformers.pipeline(
-        "text-generation",
-        model="meta-llama/Llama-3.1-8B-Instruct",
-        )
-
-        messages = [{"role": "system", "content": system_prompt},]
-
-    elif args.model == "gemini":
-        # api_key = os.getenv("GOOGLE_API_KEY")
-        # genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        chat = model.start_chat(
-            history=[
-                {"role": "user", "parts": "I will explain how you should behave.\n" + system_prompt},
-                {"role": "model", "parts": "Understood. Let's start the test.\n"},
-                ]
-        )
-    else:
-        raise Exception("Model not recognized")
     
     save_path = f"{args.model}_{variant}_{max_trials}-{num_correct}.json"
     if few_shot:
@@ -121,7 +101,29 @@ if __name__ == "__main__":
     save = []
 
     for _ in range(args.repeats):
+        torch.cuda.empty_cache()
         save_rep = []
+
+        if args.model == "llama":
+            pipeline = transformers.pipeline(
+            "text-generation",
+            model="meta-llama/Llama-3.1-8B-Instruct",
+            )
+
+            messages = [{"role": "system", "content": system_prompt},]
+
+        elif args.model == "gemini":
+            # api_key = os.getenv("GOOGLE_API_KEY")
+            # genai.configure(api_key=api_key)
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            chat = model.start_chat(
+                history=[
+                    {"role": "user", "parts": "I will explain how you should behave.\n" + system_prompt},
+                    {"role": "model", "parts": "Understood. Let's start the test.\n"},
+                    ]
+            )
+        else:
+            raise Exception("Model not recognized")
 
         n_trials = 0
         completed_cat = 0
