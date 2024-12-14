@@ -100,8 +100,11 @@ if __name__ == "__main__":
 
     save = []
 
-    for _ in range(args.repeats):
-        torch.cuda.empty_cache()
+    for rep in range(args.repeats):
+        if rep > 0:
+            pipeline = None
+            del pipeline
+            torch.cuda.empty_cache()
         save_rep = []
 
         if args.model == "llama":
