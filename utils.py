@@ -173,8 +173,8 @@ def generate_few_shot(variant):
             true_ans = card_set[0]
             ans = card_set[1] # Arbitrary wrong choice
             random.shuffle(card_set)
-            ans = card_set.index(ans)
-            true_ans = card_set.index(true_ans)
+            ans = card_set.index(ans) + 1
+            true_ans = card_set.index(true_ans) + 1
 
             prompt += f"Given: {given_card}\nOptions:\n1. {card_set[0]}\n2. {card_set[1]}\n3. {card_set[2]}\n4. {card_set[3]}\n\n"
             prompt += f"ANSWER: {ans}\n\n"
@@ -188,7 +188,7 @@ def generate_few_shot(variant):
                 given_card, card_set = wcst_generator(rule)
                 true_ans = card_set[0]
                 random.shuffle(card_set)
-                true_ans = card_set.index(true_ans)
+                true_ans = card_set.index(true_ans) + 1
 
                 prompt += f"Given: {given_card}\nOptions:\n1. {card_set[0]}\n2. {card_set[1]}\n3. {card_set[2]}\n4. {card_set[3]}\n\n"
                 prompt += f"ANSWER: {true_ans}\n\n"
@@ -204,8 +204,8 @@ def generate_few_shot(variant):
             true_ans = card_set[0]
             ans = card_set[1] # Arbitrary wrong choice
             random.shuffle(card_set)
-            ans = card_set.index(ans)
-            true_ans = card_set.index(true_ans)
+            ans = card_set.index(ans) + 1
+            true_ans = card_set.index(true_ans) + 1
 
             prompt += f"Given: {given_card}\nOptions:\n1. {card_set[0]}\n2. {card_set[1]}\n3. {card_set[2]}\n4. {card_set[3]}\n\n"
             prompt += f"ANSWER: {ans}\n\n"
@@ -219,7 +219,7 @@ def generate_few_shot(variant):
                 given_card, card_set = wcst_generator(rule, randomize=True)
                 true_ans = card_set[0]
                 random.shuffle(card_set)
-                true_ans = card_set.index(true_ans)
+                true_ans = card_set.index(true_ans) + 1
 
                 prompt += f"Given: {given_card}\nOptions:\n1. {card_set[0]}\n2. {card_set[1]}\n3. {card_set[2]}\n4. {card_set[3]}\n\n"
                 prompt += f"ANSWER: {true_ans}\n\n"
@@ -235,8 +235,8 @@ def generate_few_shot(variant):
             true_ans = string_set[0]
             ans = string_set[1] # Arbitrary wrong choice
             random.shuffle(string_set)
-            ans = string_set.index(ans)
-            true_ans = string_set.index(true_ans)
+            ans = string_set.index(ans) + 1
+            true_ans = string_set.index(true_ans) + 1
 
             prompt += f"Given: {given_string}\nOptions:\n1. {string_set[0]}\n2. {string_set[1]}\n3. {string_set[2]}\n4. {string_set[3]}\n\n"
             prompt += f"ANSWER: {ans}\n\n"
@@ -250,7 +250,7 @@ def generate_few_shot(variant):
                 given_string, string_set = string_generator(rule)
                 true_ans = string_set[0]
                 random.shuffle(string_set)
-                true_ans = string_set.index(true_ans)
+                true_ans = string_set.index(true_ans) + 1
 
                 prompt += f"Given: {given_string}\nOptions:\n1. {string_set[0]}\n2. {string_set[1]}\n3. {string_set[2]}\n4. {string_set[3]}\n\n"
                 prompt += f"ANSWER: {true_ans}\n\n"
