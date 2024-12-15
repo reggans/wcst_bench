@@ -141,9 +141,10 @@ if __name__ == "__main__":
         with tqdm(total=max_trials, desc="Total trials") as pbar:
             for _ in range(2):      
                 for rule in rules:
+                    pbar.set_description(f"Rule: {rule}")
                     correct_cnt = 0
                     
-                    for trial in tqdm(range(num_correct), total=num_correct, desc=f"Correct responses for {rule}"):
+                    while correct_cnt < num_correct:
                         if variant == "card":
                             given, opt = wcst_generator(rule, False)
                         elif variant == "card-random":
@@ -198,8 +199,10 @@ if __name__ == "__main__":
                                 total_correct += 1
                             else:
                                 correct_prefix = "Incorrect. Please try again.\n"
+                                correct_cnt = 0
 
                             if n_trials % 15 == 0:
+                                tqdm.write(f"Rule: {rule}")
                                 tqdm.write(test_prompt)
                                 tqdm.write(response)
 
