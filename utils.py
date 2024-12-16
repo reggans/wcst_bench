@@ -1,39 +1,32 @@
 import random, string
 
 def wcst_generator(rule, randomize=False):
-    if rule not in ["color", "shape", "number"]:
+    rules = ["number", "color", "shape"]
+
+    if rule not in rules:
         raise Exception("Rule not recognized")
     
-    choices = {"number": ["one", "two", "three", "four"],
-               "color": ["red", "yellow", "blue", "green"],
-               "shape": ["circle", "triangle", "star", "cross"],
-               }
-
-    given_card = {cat: random.choice(choices[cat]) for cat in choices.keys()}
+    options = [{"number": "one", "color": "red", "shape": "circle"},
+               {"number": "two", "color": "green", "shape": "triangle"},
+               {"number": "three", "color": "blue", "shape": "star"},
+               {"number": "four", "color": "yellow", "shape": "cross"},
+               ]
     
-    card_set = []
+    ans = random.choice(options)
 
-    chosen = {}
-    while chosen == given_card or chosen == {}:
-        for cat in choices.keys():
-            if cat != rule:
-                chosen[cat] = random.choice(choices[cat])
-            else:
-                chosen[cat] = given_card[cat]
-    card_set.append(chosen)
+    match_attr = ans[rule]
+    card_set = [card for card in options if card[rule] == match_attr] # Correct choice
 
-    for _ in range(3):
-        lure = {}
-        while (lure == given_card or
-               lure in card_set or
-               lure == {}):
-            for cat in choices.keys():
-                if cat != rule:
-                    lure[cat] = random.choice(choices[cat])
-                else:
-                    lure[cat] = random.choice([choice for choice in choices[cat] if choice != given_card[cat]])
+    options.remove(ans)
+    random.shuffle(options)
+    card_set.extend(options)
 
-        card_set.append(lure)
+    given_card = {}
+    for r in rules:
+        if r == rule:
+            given_card[r] = match_attr
+        else:
+            given_card[r] = random.choice([card[r] for card in options])
     
     if randomize:
         card_set = [random.sample(list(card.values()), k=len(card.values())) for card in card_set]
