@@ -17,5 +17,6 @@ def score(file_path):
             else:
                 completion_lengths[-1] += 1
         
-        scores.append(np.mean(completion_lengths))
+        score = (len(completion_lengths) - 1) / len(completion_lengths) * np.sum(completion_lengths)
+        scores.append(score)
     return np.mean(scores)
