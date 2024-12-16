@@ -23,7 +23,7 @@ def score(file_path):
                 num_correct += 1
         
         if num_correct < 5:
-            completion_lengths[-1] = 0
+            completion_lengths.pop(-1)
         # score = (len(completion_lengths) - 1) / len(completion_lengths) * np.sum(completion_lengths)
         score = np.sum([1/l for l in completion_lengths]) * 5/6
         scores.append(score)
